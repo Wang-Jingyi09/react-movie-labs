@@ -17,7 +17,8 @@ const App = () => {
           <Link to="/movies/favorites">Favorites</Link>
         </li>
       </ul>
-      <Routes path="/reviews/:id" element={<MovieReviewPage />} >
+      <Routes>
+        <Route path="/reviews/:id" element={<MovieReviewPage />} />
         <Route exact path="/movies/favorites" element={<FavoriteMoviesPage />} />
         <Route path="/movies/:id" element={<MoviePage />} />
         <Route path="/" element={<HomePage />} />
