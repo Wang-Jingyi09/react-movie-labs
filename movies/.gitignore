@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#block it from inclusion in the Git repo
+cypress.env.json
