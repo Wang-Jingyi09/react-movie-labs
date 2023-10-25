@@ -3,6 +3,7 @@ import PageTemplate from "../components/templateMovieListPage";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../components/spinner';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const UpcomingMoviesPage = () => {
     const {data: movies, error, isLoading}  = useQuery("upcoming", getUpcomingMovies);
@@ -32,7 +33,9 @@ const UpcomingMoviesPage = () => {
         <PageTemplate
             title="Upcoming Movies"
             movies={movies.results}
-            action={movie => {}}
+            action={movie => {
+                return <PlaylistAddIcon/>
+            }}
         />
     );
 };
