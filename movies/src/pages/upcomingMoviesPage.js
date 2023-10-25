@@ -1,27 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PageTemplate from "../components/templateMovieListPage";
+import { getUpcomingMovies } from "../api/tmdb-api";
+import { useQuery } from "react-query";
+import Spinner from '../components/spinner';
 
 const UpcomingMoviesPage = () => {
-    const [movies, setMovies] = useState([]);
-    
-    useEffect(() => {
-        
-        fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=f84d47c06e7e7fc9b52da9eb26d58210&language=en-US&page=1`)
-        .then(response => response.json())
-        .then(data => {
-            setMovies(data.results);
-        })
-        .catch(error => {
-            console.error("There was an error fetching the movies:", error);
-        });
-    }, []);
+    const {data: movies, error, isLoading}  = useQuery("upcoming", getUpcomingMovies);
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    if (error) {
+        return <h1>{`Error: ${error.message}`}</h1>;
+    }
+
+    // useEffect(() => {
+
+    //     fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=1`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setMovies(data.results);
+    //         })
+    //         .catch(error => {
+    //             console.error("There was an error fetching the movies:", error);
+    //         });
+    // }, []);
 
 
     return (
         <PageTemplate
             title="Upcoming Movies"
-            movies={movies}
-            
+            movies={movies.results}
+            action={movie => {}}
         />
     );
 };
