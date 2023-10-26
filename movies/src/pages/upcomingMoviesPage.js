@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../components/spinner';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import { MoviesContext } from "../contexts/moviesContext"; 
+import AddToMustWatchIcon from '../components/cardIcons/addToMustWatch'; 
 
 const UpcomingMoviesPage = () => {
-    const {data: movies, error, isLoading}  = useQuery("upcoming", getUpcomingMovies);
+    const {data, error, isLoading, isError }  = useQuery("upcoming", getUpcomingMovies);
 
     if (isLoading) {
         return <Spinner />;
@@ -15,26 +16,22 @@ const UpcomingMoviesPage = () => {
     if (error) {
         return <h1>{`Error: ${error.message}`}</h1>;
     }
+    
+    const movies = data.results;
+    const mustWatch = movies.filter(m => m.mustWatch)
 
-    // useEffect(() => {
+    
+    localStorage.setItem('favorites', JSON.stringify(mustWatch))
 
-    //     fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=1`)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setMovies(data.results);
-    //         })
-    //         .catch(error => {
-    //             console.error("There was an error fetching the movies:", error);
-    //         });
-    // }, []);
+
 
 
     return (
         <PageTemplate
             title="Upcoming Movies"
-            movies={movies.results}
+            movies={movies}
             action={movie => {
-                return <PlaylistAddIcon/>
+                return <AddToMustWatchIcon movie={ movie }/>
             }}
         />
     );

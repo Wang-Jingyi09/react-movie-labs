@@ -1,4 +1,3 @@
-
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -16,6 +15,8 @@ import { Link } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import React, { useContext } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+//import MustWatchMoviesPage from '../pages/mustWatchMoviesPage'; 
 
 export default function MovieCard({ movie, action }) {
     // const movie = props.movie;
@@ -24,6 +25,15 @@ export default function MovieCard({ movie, action }) {
     //     e.preventDefault();
     //     props.selectFavorite(movie.id);
     // };
+
+
+    const { mustWatch, addToMustWatch } = useContext(MoviesContext);
+    if (mustWatch.find((id) => id === movie.id)) {
+        movie.mustWatch = true;
+    } else {
+        movie.mustWatch = false
+    }
+
     const { favorites, addToFavorites } = useContext(MoviesContext);
 
     if (favorites.find((id) => id === movie.id)) {
@@ -42,11 +52,20 @@ export default function MovieCard({ movie, action }) {
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
-                    movie.favorite ? (
-                        <Avatar sx={{ backgroundColor: 'red' }}>
-                            <FavoriteIcon />
-                        </Avatar>
-                    ) : null
+                    <div>
+                        {movie.mustWatch ? (
+                            <Avatar sx={{ backgroundColor: 'red' }}>
+                                <PlaylistAddIcon />
+                            </Avatar>
+                        ) : null}
+
+                        {movie.favorite ? (
+                            <Avatar sx={{ backgroundColor: 'red' }}>
+                                <FavoriteIcon />
+                            </Avatar>
+                        ) : null}
+
+                    </div>
                 }
                 title={
                     <Typography variant="h5" component="p">
